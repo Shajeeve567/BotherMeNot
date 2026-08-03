@@ -1,27 +1,13 @@
 {
-  "name": "aiworkflowengine",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "bother-me-not",
+  "private": true,
+  "version": "0.1.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@types/node": "^26.1.1",
-    "drizzle-kit": "^0.31.10",
-    "tsx": "^4.23.1",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
-  },
-  "dependencies": {
-    "bullmq": "^5.80.9",
-    "dotenv": "^17.4.2",
-    "fastify": "^5.10.0",
-    "fastify-type-provider-zod": "^7.0.0",
-    "ioredis": "^5.11.1",
-    "zod": "^4.4.3"
+    "dev": "pnpm --parallel -r run dev",
+    "build": "pnpm -r run build",
+    "db:generate": "pnpm -C packages/db run db:generate",
+    "db:migrate": "pnpm -C packages/db run db:migrate",
+    "db:push": "pnpm -C packages/db run db:push",
+    "db:studio": "pnpm -C packages/db run db:studio"
   }
 }

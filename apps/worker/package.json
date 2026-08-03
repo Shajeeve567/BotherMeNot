@@ -1,0 +1,22 @@
+{
+  "name": "@bother-me-not/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@bother-me-not/contracts": "workspace:*",
+    "@bother-me-not/db": "workspace:*",
+    "@bother-me-not/domain": "workspace:*",
+    "bullmq": "^5.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.1.0",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  }
+}
