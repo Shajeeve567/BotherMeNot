@@ -9,5 +9,8 @@
     "db:migrate": "pnpm -C packages/db run db:migrate",
     "db:push": "pnpm -C packages/db run db:push",
     "db:studio": "pnpm -C packages/db run db:studio"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0"
   }
 }
