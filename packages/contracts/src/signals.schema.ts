@@ -22,4 +22,14 @@ export const signalSchema = z.object({
   rawPayload: z.unknown(),
 });
 
+
+export const signalIntakeResponseSchema = z.object({
+  received: z.boolean(),
+  signalId: z.string().uuid().optional(),
+  duplicate: z.boolean().optional(),
+});
+
+
+
+export type SignalIntakeResponse = z.infer<typeof signalIntakeResponseSchema>;
 export type NewSignalSchema = z.infer<typeof signalSchema>;

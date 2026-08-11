@@ -1,6 +1,12 @@
 import { eq, and } from "drizzle-orm";
 import { db } from "../client.js";
 import { signals, type NewSignalRow, type SignalRow } from "../schema.js";
+import { NewSignal } from "@bother-me-not/domain";
+import { insertSignal } from "../index.js";
+
+
+export interface 
+
 
 export const signalsRepo = {
   async create(signal: NewSignalRow): Promise<SignalRow> {
@@ -21,4 +27,8 @@ export const signalsRepo = {
       );
     return row;
   },
+
+  async insertSignal(
+    normalizedPayload: NewSignal
+  )
 };

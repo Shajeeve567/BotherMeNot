@@ -1,4 +1,2 @@
-export {
-  signalSchema,
-  type NewSignalSchema,
-} from "./signal.js";
+
+export * from "./signals.schema.js";
