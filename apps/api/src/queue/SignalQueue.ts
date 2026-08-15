@@ -1,4 +1,7 @@
 import { Queue } from "bullmq";
+import type { ProcessSignalJobData } from "@bother-me-not/contracts";
+
+
 
 const connection = {
   host: process.env.REDIS_HOST ?? "localhost",
@@ -6,10 +9,6 @@ const connection = {
 };
 
 export const signalQueue = new Queue("signal-processing", { connection });
-
-export interface ProcessSignalJobData {
-  signalId: string;
-}
 
 export async function enqueueSignalProcessing(signalId: string): Promise<void> {
   await signalQueue.add(

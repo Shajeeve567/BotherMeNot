@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { verifyGithubSignature } from "./verify-signature.js";
 import { normalizeGithubPayload } from "./normalize-github.js";
 import { signalIntakeResponseSchema } from "@bother-me-not/contracts";
-import { enqueueSignalProcessing } from "../../queue/queue.js";
+import { enqueueSignalProcessing } from "../../queue/SignalQueue.js";
 import { signalsRepo } from "@bother-me-not/db";
 
 export async function registerSignalRoutes(app: FastifyInstance): Promise<void> {
