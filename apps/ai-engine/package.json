@@ -12,6 +12,7 @@
     "@bother-me-not/contracts": "workspace:*",
     "@bother-me-not/db": "workspace:*",
     "@bother-me-not/domain": "workspace:*",
+    "@bother-me-not/queue": "workspace:*",
     "bullmq": "^5.12.0"
   },
   "devDependencies": {
