@@ -17,20 +17,3 @@ export const signalQueue = new Queue(QUEUES.FALLBACK, { connection: redisConnect
 
 
 
-
-// export async function enqueueAiProcessing(normalizedPayload: NewSignal): Promise<void> {
-//   await aiQueue.add(
-//     "process-signal",
-//     normalizedPayload satisfies NewSignal,
-//     {
-//       attempts: 3,
-//       backoff: {
-//         type: "exponential",
-//         delay: 1000,
-//       },
-//       removeOnComplete: true,
-//       removeOnFail: { age: 24 * 3600},
-//     }
-//   );
-// }
-

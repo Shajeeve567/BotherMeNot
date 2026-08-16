@@ -3,18 +3,31 @@ import { verifyGithubSignature } from "./verify-signature.js";
 import { normalizeGithubPayload } from "./normalize-github.js";
 import { signalIntakeResponseSchema } from "@bother-me-not/contracts";
 import { signalsRepo } from "@bother-me-not/db";
-import { signalQueue } from "@bother-me-not/queue";
-
-
-export interface ProcessSignalJobData{
-    signalId: string
-}
+import { signalQueue, aiQueue } from "@bother-me-not/queue";
+import { ProcessSignalJobData } from "@bother-me-not/contracts";
 
 
 export async function enqueueSignalProcessing(signalId: string): Promise<void> {
   await signalQueue.add(
-    "process-signal",
+    "signal-processing",
     { signalId } satisfies ProcessSignalJobData,
+    {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 1000,
+      },
+      removeOnComplete: true,
+      removeOnFail: { age: 24 * 3600},
+    }
+  );
+}
+
+
+export async function enqueueAiProcessing(signalId: string): Promise<void> {
+  await aiQueue.add(
+    "ai-engine-processing",
+    signalId satisfies string,
     {
       attempts: 3,
       backoff: {
@@ -71,10 +84,11 @@ export async function registerSignalRoutes(app: FastifyInstance): Promise<void> 
         // Signal enqueuing 
         const { signal, duplicate } = await signalsRepo.insertSignal(normalized);
 
+        
         // AI-engine queueing
-
         if (!duplicate) {
             await enqueueSignalProcessing(signal.id);
+            await enqueueAiProcessing(signal.id);
         }
 
         return reply.code(200).send(
