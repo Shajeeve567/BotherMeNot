@@ -6,13 +6,8 @@ import type { EvaluationResult } from "@bother-me-not/contracts";
 const signalAgent = new Agent({
   id: "signalAgent",
   name: "Signal Agent",
-  instructions: "Analyze signal data and provide helpful insights.",
-  model: 'google/gemini-2.5-flash',
-  defaultOptions: {
-    maxSteps: 100,
-    autoResumeSuspendedTools: true,
-  },
-
+  instructions: "Analyze signal data and provide helpful insights.", // replace with real prompt
+  model: google("gemini-2.5-flash"),
 });
 
 
