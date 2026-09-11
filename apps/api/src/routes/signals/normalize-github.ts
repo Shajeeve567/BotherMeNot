@@ -46,7 +46,12 @@ export function normalizeGithubPayload(
     if (!type){
         return null;
     }
-    const subject = payload.issues ?? payload.pull_request ?? payload.check_run ?? {}
+    const subject = payload.issue ?? payload.pull_request ?? payload.check_run ?? {}
+
+    if (!subject) {
+      console.warn(`normalizer: no subject for ${githubEvent}.${payload.action}`);
+      return null;
+    }
 
     return {
         source: "github",

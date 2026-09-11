@@ -1,5 +1,5 @@
 {
-  "name": "@bother-me-not/contracts",
+  "name": "@bother-me-not/queue",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -20,9 +20,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zod": "^3.25.76"
+    "bullmq": "^5.81.3"
   },
   "devDependencies": {
+    "@types/node": "^22.1.0",
     "typescript": "^5.5.4"
   }
 }
