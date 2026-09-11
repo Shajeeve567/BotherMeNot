@@ -9,18 +9,20 @@
     "start": "dotenv -e ../../.env -- node dist/index.js"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.67",
     "@bother-me-not/contracts": "workspace:*",
     "@bother-me-not/db": "workspace:*",
     "@bother-me-not/domain": "workspace:*",
     "@bother-me-not/notify": "workspace:*",
     "@bother-me-not/queue": "workspace:*",
+    "@mastra/core": "^1.65.0",
     "@mastra/openai": "^1.1.0",
-    "bullmq": "^5.12.0",
-    "mastra": "^1.25.0"
+    "bullmq": "^5.12.0"
   },
   "devDependencies": {
-    "@types/node": "^22.1.0",
+    "@types/node": "^22.20.1",
+    "mastra": "^1.25.0",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.9.3"
   }
 }

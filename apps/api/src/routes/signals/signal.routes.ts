@@ -27,7 +27,7 @@ export async function enqueueSignalProcessing(signalId: string): Promise<void> {
 export async function enqueueAiProcessing(signalId: string): Promise<void> {
   await aiQueue.add(
     "ai-engine-processing",
-    signalId satisfies string,
+    { signalId } satisfies ProcessSignalJobData,
     {
       attempts: 3,
       backoff: {
@@ -38,6 +38,15 @@ export async function enqueueAiProcessing(signalId: string): Promise<void> {
       removeOnFail: { age: 24 * 3600},
     }
   );
+}
+
+
+// Decides which evaluator path a signal takes.
+// "ai"    → apps/ai-engine (Mastra agent, token cost)
+// "rules" → apps/worker   (deterministic, free)
+function routeSignal(type: string): "ai" | "rules" {
+  const rulesTypes = new Set(["ci_run_succeeded"]);
+  return rulesTypes.has(type) ? "rules" : "ai";
 }
 
 
@@ -85,10 +94,15 @@ export async function registerSignalRoutes(app: FastifyInstance): Promise<void> 
         const { signal, duplicate } = await signalsRepo.insertSignal(normalized);
 
         
-        // AI-engine queueing
+        // Route to exactly one evaluator — never both
         if (!duplicate) {
-            await enqueueSignalProcessing(signal.id);
-            await enqueueAiProcessing(signal.id);
+          console.log({...signal});
+            const path = routeSignal(signal.type);
+            if (path === "ai") {
+                await enqueueAiProcessing(signal.id);
+            } else {
+                await enqueueSignalProcessing(signal.id);
+            }
         }
 
         return reply.code(200).send(
