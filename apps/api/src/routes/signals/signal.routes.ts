@@ -2,8 +2,54 @@ import { FastifyInstance } from "fastify";
 import { verifyGithubSignature } from "./verify-signature.js";
 import { normalizeGithubPayload } from "./normalize-github.js";
 import { signalIntakeResponseSchema } from "@bother-me-not/contracts";
-import { enqueueSignalProcessing } from "../../queue/SignalQueue.js";
 import { signalsRepo } from "@bother-me-not/db";
+import { signalQueue, aiQueue } from "@bother-me-not/queue";
+import { ProcessSignalJobData } from "@bother-me-not/contracts";
+
+
+export async function enqueueSignalProcessing(signalId: string): Promise<void> {
+  await signalQueue.add(
+    "signal-processing",
+    { signalId } satisfies ProcessSignalJobData,
+    {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 1000,
+      },
+      removeOnComplete: true,
+      removeOnFail: { age: 24 * 3600},
+    }
+  );
+}
+
+
+export async function enqueueAiProcessing(signalId: string): Promise<void> {
+  await aiQueue.add(
+    "ai-engine-processing",
+    { signalId } satisfies ProcessSignalJobData,
+    {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 1000,
+      },
+      removeOnComplete: true,
+      removeOnFail: { age: 24 * 3600},
+    }
+  );
+}
+
+
+// Decides which evaluator path a signal takes.
+// "ai"    → apps/ai-engine (Mastra agent, token cost)
+// "rules" → apps/worker   (deterministic, free)
+function routeSignal(type: string): "ai" | "rules" {
+  const rulesTypes = new Set(["ci_run_succeeded"]);
+  return rulesTypes.has(type) ? "rules" : "ai";
+}
+
+
 
 export async function registerSignalRoutes(app: FastifyInstance): Promise<void> {
     app.post("/webhooks/github", async(request, reply) =>{
@@ -44,12 +90,19 @@ export async function registerSignalRoutes(app: FastifyInstance): Promise<void> 
                 signalIntakeResponseSchema.parse({ received: true })
             );
         }
-        // enqueuing 
-
+        // Signal enqueuing 
         const { signal, duplicate } = await signalsRepo.insertSignal(normalized);
 
+        
+        // Route to exactly one evaluator — never both
         if (!duplicate) {
-            await enqueueSignalProcessing(signal.id);
+          console.log({...signal});
+            const path = routeSignal(signal.type);
+            if (path === "ai") {
+                await enqueueAiProcessing(signal.id);
+            } else {
+                await enqueueSignalProcessing(signal.id);
+            }
         }
 
         return reply.code(200).send(

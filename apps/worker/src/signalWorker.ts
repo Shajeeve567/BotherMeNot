@@ -5,7 +5,7 @@ const connection = {
   host: process.env.REDIS_HOST ?? "localhost",
   port: Number(process.env.REDIS_PORT ?? 6379),
 };
-
+// worker for fall-back system
 export function startWorker(): Worker<ProcessSignalJobData> {
   const worker = new Worker<ProcessSignalJobData>(
     "signal-processing",
