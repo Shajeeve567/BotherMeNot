@@ -13,6 +13,8 @@
     "@bother-me-not/db": "workspace:*",
     "@bother-me-not/domain": "workspace:*",
     "@bother-me-not/queue": "workspace:*",
+    "@fastify/cookie": "^9.4.0",
+    "@fastify/jwt": "^8.0.1",
     "bullmq": "^5.81.3",
     "fastify": "^4.28.1",
     "fastify-type-provider-zod": "^2.0.0",

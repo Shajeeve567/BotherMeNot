@@ -28,33 +28,47 @@ export const signalsRepo = {
   async findBySourceAndExternalId(
     source: string,
     externalId: string,
+    projectId: string,
   ): Promise<SignalRow | undefined> {
     const [row] = await db
       .select()
       .from(signals)
       .where(
-        and(eq(signals.source, source), eq(signals.externalId, externalId)),
+        and(
+          eq(signals.source, source),
+          eq(signals.externalId, externalId),
+          eq(signals.projectId, projectId),
+        ),
       );
     return row;
   },
 
   async insertSignal(payload: NewSignal): Promise<InsertSignalResult> {
-    const existing = await this.findBySourceAndExternalId(payload.source, payload.externalId);
+    const existing = await this.findBySourceAndExternalId(
+      payload.source,
+      payload.externalId,
+      payload.projectId,
+    );
 
     if(existing) return { signal: existing, duplicate: true }
-    
+
     const [inserted] = await db.insert(signals).values({
+      projectId: payload.projectId,
       source: payload.source,
       externalId: payload.externalId,
       type: payload.type,
       payload: payload.payload,
       rawPayload: payload.rawPayload
     })
-    .onConflictDoNothing({ target: [signals.source, signals.externalId] })
+    .onConflictDoNothing({ target: [signals.source, signals.externalId, signals.projectId] })
     .returning();
 
     if (!inserted) {
-      const winner = await this.findBySourceAndExternalId(payload.source, payload.externalId);
+      const winner = await this.findBySourceAndExternalId(
+        payload.source,
+        payload.externalId,
+        payload.projectId,
+      );
       if (winner) return { signal: winner, duplicate: true };
       throw new Error("Conflict resolved but no row found");
     }
