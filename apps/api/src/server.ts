@@ -1,7 +1,8 @@
 import Fastify from "fastify";
 import { registerRawBody } from "./plugins/raw-body.js";
+import { registerAuth } from "./plugins/auth.js";
+import { registerAuthRoutes } from "./routes/auth/auth.routes.js";
 import { registerSignalRoutes } from "./routes/signals/signal.routes.js";
-
 
 
 async function main() {
@@ -11,6 +12,8 @@ async function main() {
   app.get("/health", async () => ({ status: "ok" }));
 
   await registerRawBody(app);
+  await registerAuth(app);
+  await registerAuthRoutes(app);
   await registerSignalRoutes(app);
 
   const port = Number(process.env.PORT ?? 3000);
