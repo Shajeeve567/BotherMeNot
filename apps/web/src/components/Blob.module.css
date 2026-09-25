@@ -1,0 +1,6 @@
+.blob {
+  position: absolute;
+  z-index: 0;
+  border-radius: 999px;
+  pointer-events: none;
+}

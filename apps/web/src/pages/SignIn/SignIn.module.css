@@ -1,0 +1,357 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 35px clamp(20px, 3vw, 35px);
+  background: var(--green-700);
+}
+
+.header,
+.footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.repoLink {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.24px;
+  white-space: nowrap;
+  color: #e5eee6;
+  border-radius: 8px;
+}
+
+.repoLink:hover {
+  color: var(--white);
+}
+
+.repoArrow {
+  font-size: 17px;
+}
+
+/* ── Main grid: stacks automatically once two 420px columns no longer fit (~900px) ── */
+
+.main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  column-gap: 104.544px;
+  row-gap: 56px;
+  align-items: center;
+  padding: 55px 0;
+}
+
+/* ── Left: pitch ── */
+
+.pitch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 480px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16.5px;
+  letter-spacing: 1.21px;
+  color: var(--mint-300);
+}
+
+.eyebrowDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--mint-300);
+}
+
+.title {
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 6vw, 81.312px);
+  line-height: 0.86;
+  letter-spacing: 0.813px;
+}
+
+.noise {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92em;
+  letter-spacing: 0;
+}
+
+.lede {
+  margin-top: 44px;
+  max-width: 405px;
+  font-size: 16px;
+  line-height: 26.4px;
+  color: var(--mint-body);
+  text-wrap: pretty;
+}
+
+.events {
+  align-self: stretch;
+  margin-top: 45px;
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(23, 75, 27, 0.24);
+  box-shadow: inset 0 0 0 0.8px rgba(255, 255, 255, 0.176);
+}
+
+.event {
+  display: grid;
+  grid-template-columns: 9px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 11px 12px;
+  border-radius: 9px;
+  font-family: var(--font-mono);
+  color: #a5b9a6;
+}
+
+.eventSent {
+  background: var(--ink);
+  box-shadow: 0 10px 24px 0 rgba(9, 53, 14, 0.23);
+  color: var(--white);
+}
+
+.eventText {
+  font-size: 11px;
+  line-height: 16.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tag {
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 13.5px;
+  letter-spacing: 0.36px;
+}
+
+.eventSent .tag {
+  color: var(--signal);
+}
+
+.dotMuted,
+.dotSignal {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.dotMuted {
+  background: #809781;
+}
+
+.dotSignal {
+  background: var(--signal);
+  box-shadow: 0 0 0 4px rgba(216, 242, 99, 0.125);
+}
+
+.focus {
+  margin-top: 26px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16.5px;
+  color: #d9e5d9;
+}
+
+.focus > span {
+  margin-right: 8px;
+  color: var(--white);
+}
+
+/* ── Right: paper card ── */
+
+.card {
+  --pad-x: clamp(28px, 6vw, 52px);
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  justify-self: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 54px var(--pad-x) 0;
+  border-radius: 28px;
+  background: var(--paper);
+  box-shadow: 0 35px 70px 0 rgba(13, 53, 17, 0.267);
+}
+
+/* Ink strip across the top */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 8px;
+  background: var(--ink);
+}
+
+.tile {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: var(--green-700);
+  rotate: -6deg;
+}
+
+.welcome {
+  margin-top: 30px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16.5px;
+  letter-spacing: 1.1px;
+  color: var(--green-700);
+}
+
+.cardTitle {
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+}
+
+.cardBody {
+  margin-top: 24px;
+  max-width: 376px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--paper-text);
+  text-wrap: pretty;
+}
+
+.githubButton {
+  align-self: stretch;
+  margin-top: 30px;
+  height: 57px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 120ms ease;
+}
+
+.githubButton:hover {
+  background: var(--green-900);
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.divider {
+  align-self: stretch;
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 15px;
+  color: #88908a;
+}
+
+.divider > span:not(:nth-child(2)) {
+  height: 1px;
+  background: var(--paper-rule);
+}
+
+.legal {
+  margin-top: 25px;
+  font-size: 11px;
+  line-height: 17.05px;
+  color: var(--paper-muted);
+}
+
+.legal a {
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border-radius: 4px;
+}
+
+.legal a:hover {
+  color: var(--green-900);
+}
+
+/* Bleeds to the card edges */
+.secure {
+  align-self: stretch;
+  margin: 25px calc(-1 * var(--pad-x)) 0;
+  padding: 15px var(--pad-x);
+  border-top: 0.8px solid #d8d9d0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 15px;
+  color: #7b847d;
+}
+
+.secureGlyph {
+  font-size: 17px;
+  line-height: 25.5px;
+  color: var(--green-700);
+}
+
+/* Paper surface: the signal-yellow ring is invisible here, so use ink. */
+.card :focus-visible {
+  outline-color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .deco {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .repoVerb {
+    display: none;
+  }
+}

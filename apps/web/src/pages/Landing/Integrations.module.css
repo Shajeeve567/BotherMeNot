@@ -1,0 +1,89 @@
+.panel {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: clamp(28px, 4vw, 48px);
+  border-radius: 44px;
+  background: var(--ink);
+}
+
+.pill {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+  padding: 22px 36px;
+  border-radius: 999px;
+  background: var(--green-700);
+  text-align: center;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.caption {
+  font-size: 14px;
+  color: var(--mint-200);
+}
+
+.center {
+  gap: 4px;
+  padding: 22px 40px;
+  background: var(--white);
+}
+
+.center .caption {
+  color: var(--green-700);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 4px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--green-900);
+}
+
+.brand > svg {
+  margin-top: -4px;
+}
+
+.arrow {
+  font-size: 28px;
+  color: var(--grey-600);
+}
+
+/* The three pills need ~840px in a row; below that, stack and point the flow downwards. */
+@media (max-width: 1100px) {
+  .panel {
+    flex-direction: column;
+  }
+
+  .arrow {
+    rotate: 90deg;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    border-radius: 32px;
+  }
+
+  .center {
+    padding: 22px 24px;
+  }
+
+  .brand {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+}

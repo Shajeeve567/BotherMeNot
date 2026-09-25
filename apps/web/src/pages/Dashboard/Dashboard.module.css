@@ -1,0 +1,147 @@
+.page {
+  position: relative;
+  height: 100vh;
+  min-height: 734.4px;
+  overflow: hidden;
+  background: var(--green-700);
+}
+
+/* ── Sidebar: pushed off the left edge so only its right part shows ── */
+
+.sidebar {
+  position: absolute;
+  z-index: 2;
+  left: -38px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 123px;
+  min-height: 330.488px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 28px;
+  padding: 22px 16px 18px 0;
+  border-radius: 33px;
+  background: var(--ink);
+  box-shadow: 0 18px 35px 0 rgba(13, 53, 17, 0.12);
+}
+
+.logo {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: var(--green-700);
+  color: var(--white);
+  transition: background-color 120ms ease;
+}
+
+.logo:hover {
+  background: var(--green-600);
+}
+
+.tabs {
+  display: grid;
+  grid-template-rows: repeat(3, 46px);
+  gap: 9px;
+}
+
+.tab {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  color: #4a5c4c;
+  transition: background-color 120ms ease;
+}
+
+.tab:hover {
+  background: var(--ink-hover);
+}
+
+.tabActive,
+.tabActive:hover {
+  background: var(--green-700);
+  color: var(--white);
+}
+
+.help {
+  width: 44px;
+  height: 44px;
+  margin-right: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.help > span {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 0.8px #788b7a;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 21px;
+  color: #788b7a;
+}
+
+.help:hover > span {
+  color: var(--white);
+  box-shadow: inset 0 0 0 0.8px var(--white);
+}
+
+/* ── Workspace: frosted panel ── */
+
+.workspace {
+  position: absolute;
+  z-index: 1;
+  left: 142px;
+  top: 82px;
+  right: clamp(24px, 3.3vw, 38px);
+  bottom: 70px;
+  min-height: 582.4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 29px;
+  background: rgba(217, 217, 217, 0.51);
+  box-shadow:
+    inset 0 0 0 0.8px rgba(255, 255, 255, 0.086),
+    0 22px 58px 0 rgba(21, 76, 27, 0.13);
+  backdrop-filter: blur(28px);
+}
+
+.skeleton {
+  width: 110px;
+  display: grid;
+  gap: 10px;
+  opacity: 0.19;
+}
+
+.skeleton > span {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--white);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton > span {
+    animation: none;
+  }
+}

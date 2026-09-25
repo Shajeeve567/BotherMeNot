@@ -103,7 +103,7 @@ export async function registerAuthRoutes(app: FastifyInstance): Promise<void> {
             path: "/",
         });
 
-        return reply.redirect(config.appBaseUrl);
+        return reply.redirect(`${config.webBaseUrl}/dashboard`);
     });
 
 

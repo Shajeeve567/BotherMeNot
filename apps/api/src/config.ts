@@ -15,6 +15,8 @@ const appBaseUrl = process.env.API_BASE_URL ?? "http://localhost:3000";
 export const config = {
     port: Number(process.env),
     appBaseUrl,
+    // where the browser is sent after login (apps/web)
+    webBaseUrl: process.env.WEB_BASE_URL ?? "http://localhost:5173",
     jwtSecret: required("JWT_SECRET"),
     github: {
         clientId: required("GITHUB_OAUTH_CLIENT_ID"),

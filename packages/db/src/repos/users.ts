@@ -47,7 +47,8 @@ export const usersRepo = {
                     avatarUrl: profile.avatarUrl ?? undefined,
                 })
                 .returning();
-
+                
+                // check user data put to db before registering authIdentity to avoid ghost users
                 if (!user) throw new Error("Failed to create user");
 
                 await tx.insert(authIdentities).values({

@@ -1,0 +1,10 @@
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image: var(--grain);
+  background-size: 240px 240px;
+  border-radius: inherit;
+}

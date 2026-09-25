@@ -1,0 +1,82 @@
+.nav {
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+  width: min(1160px, calc(100% - 24px));
+  height: 64px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 8px 0 24px;
+  border-radius: 20px;
+  background: var(--ink);
+}
+
+/* Center links scroll horizontally when space runs out. */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--grey-500);
+  transition: background-color 120ms ease;
+}
+
+.link:hover {
+  background: var(--ink-hover);
+  color: var(--white);
+}
+
+.active {
+  color: var(--white);
+}
+
+.cta {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 14px;
+  background: var(--green-600);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 120ms ease;
+}
+
+.cta:hover {
+  background: var(--green-700);
+}
+
+/* Narrow screens: keep the bell chip, drop the wordmark so the links have room. */
+@media (max-width: 760px) {
+  .nav {
+    padding-left: 12px;
+    gap: 8px;
+  }
+
+  .nav > a:first-child > span:last-child {
+    display: none;
+  }
+
+  .link {
+    padding: 0 10px;
+  }
+}

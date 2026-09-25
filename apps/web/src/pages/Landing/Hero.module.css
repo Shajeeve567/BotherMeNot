@@ -1,0 +1,105 @@
+.hero {
+  position: relative;
+  z-index: 1;
+  width: min(1160px, calc(100% - 2 * clamp(16px, 7.8vw, 109px)));
+  margin: clamp(40px, 6vw, 80px) auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(48px, 6vw, 88px) clamp(20px, 4vw, 64px) clamp(20px, 4vw, 64px);
+  border-radius: clamp(24px, 3vw, 40px);
+  background: var(--green-600);
+}
+
+/* The mockup is a fixed 144px; clamp it so it fits on phones. */
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 11vw, 144px);
+  line-height: 0.95;
+  text-align: center;
+  white-space: pre;
+}
+
+.tagline {
+  margin-top: 16px;
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.body {
+  margin-top: 24px;
+  max-width: 520px;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--mint-100);
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.screenshot {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-top: clamp(48px, 6vw, 80px);
+  border-radius: 20px;
+  background: var(--green-700);
+  box-shadow: 0 24px 48px -16px rgba(16, 76, 22, 0.55);
+}
+
+/* ── Decorations ── */
+
+.buzzer {
+  position: absolute;
+  right: 120px;
+  top: 56px;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--green-900);
+  box-shadow:
+    0 0 0 14px rgba(255, 255, 255, 0.18),
+    0 0 0 30px rgba(255, 255, 255, 0.08);
+  rotate: 14deg;
+  pointer-events: none;
+}
+
+.chip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.chipMuted {
+  color: var(--grey-500);
+}
+
+.chipMuted > span {
+  text-decoration: line-through;
+}
+
+.chipSignal {
+  padding: 12px 20px;
+  font-weight: 600;
+  box-shadow: 0 16px 32px -12px rgba(16, 76, 22, 0.7);
+}
