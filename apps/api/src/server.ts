@@ -2,9 +2,12 @@ import Fastify from "fastify";
 import { registerRawBody } from "./plugins/raw-body.js";
 import { registerAuth } from "./plugins/auth.js";
 import { registerAuthRoutes } from "./routes/auth/auth.routes.js";
-import { registerSignalRoutes } from "./routes/signals/signal.routes.js";
 import { registerErrorHandler } from "./plugins/error-handler.js"; 
 import { registerProjectRoutes } from "./routes/projects/projects.routes.js";
+import { registerGithubAppSetupRoute } from "./routes/github-app/setup.routes.js";
+import { registerGithubAppWebhookRoute } from "./routes/github-app/webhook.routes.js";
+
+
 
 async function main() {
 
@@ -17,7 +20,8 @@ async function main() {
   await registerAuth(app);
   await registerAuthRoutes(app);
   await registerProjectRoutes(app);
-  await registerSignalRoutes(app);
+  await registerGithubAppSetupRoute(app);
+  await registerGithubAppWebhookRoute(app);
 
   const port = Number(process.env.PORT ?? 3000);
 
