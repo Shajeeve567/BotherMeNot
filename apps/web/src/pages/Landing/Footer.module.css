@@ -1,0 +1,118 @@
+/* Anchored to the bottom of the page: only the top corners are rounded. */
+.footer {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(72px, 9vw, 120px);
+  padding: clamp(32px, 4vw, 56px);
+  overflow: hidden;
+  border-radius: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px) 0 0;
+  background: var(--ink);
+}
+
+.deco {
+  position: absolute;
+  right: -60px;
+  bottom: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: var(--green-700);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+}
+
+.about {
+  grid-column: span 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.tagline {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.blurb {
+  max-width: 360px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--grey-500);
+  text-wrap: pretty;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.heading {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  font-size: 15px;
+  color: var(--grey-500);
+  border-radius: 6px;
+}
+
+.link:hover {
+  color: var(--white);
+}
+
+.bottom {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 48px;
+  padding-top: 24px;
+  box-shadow: inset 0 1px 0 var(--ink-rule);
+}
+
+.copyright {
+  font-size: 14px;
+  color: var(--grey-600);
+}
+
+.round {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--ink-hover);
+  transition: background-color 120ms ease;
+}
+
+.round:hover {
+  background: var(--green-700);
+}
+
+/* A two-column span would force overflow once only one column fits. */
+@media (max-width: 560px) {
+  .about {
+    grid-column: auto;
+  }
+}
