@@ -1,0 +1,48 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--white);
+  border-radius: 12px;
+}
+
+.chip {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--green-600);
+}
+
+/* Luckiest Guy sits high in its box; padding-top optically centers it against the chip. */
+.word {
+  font-family: var(--font-display);
+  line-height: 1;
+  padding-top: 3px;
+  white-space: nowrap;
+}
+
+.sm .word {
+  font-size: 22px;
+  letter-spacing: 0.01em;
+}
+
+.md {
+  gap: 11px;
+}
+
+.md .word {
+  font-size: 23px;
+  letter-spacing: 0.23px;
+}
+
+.lg {
+  gap: 12px;
+}
+
+.lg .word {
+  font-size: 36px;
+  padding-top: 4px;
+}

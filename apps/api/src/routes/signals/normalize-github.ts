@@ -41,7 +41,7 @@ export function normalizeGithubPayload(
     githubEvent: string,
     deliveryId: string,
     payload: Record<string, any>
-): NewSignal | null {
+): Omit<NewSignal, "projectId"> | null {
     const type = resolveSignalType(githubEvent, payload)
     if (!type){
         return null;

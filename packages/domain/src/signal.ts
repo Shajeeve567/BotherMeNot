@@ -26,6 +26,7 @@ export interface SignalPayload {
 
 export interface Signal {
     id: string;
+    projectId: string;
     source: SignalSource;
     externalId: string;
     type: SignalType;

@@ -1,0 +1,48 @@
+/* Design tokens from the handoff README. Components reference these, never raw hex. */
+:root {
+  /* Ink */
+  --ink: #1b1b1b;
+  --ink-hover: #2d2d2d;
+  --ink-rule: #373737;
+
+  /* Greens */
+  --green-900: #104c16;
+  --green-800: #255d2b;
+  --green-700: #37653c;
+  --green-600: #557f59;
+  --green-400: #7fa382;
+
+  /* Text on green */
+  --mint-100: #ebf2ec;
+  --mint-200: #dce8dd;
+  --mint-300: #d7e5d8;
+  --mint-body: #edf3ee;
+  --mint-meta: #d8e3d9;
+
+  /* Neutrals */
+  --grey-500: #a0a0a0;
+  --grey-600: #848484;
+  --white: #ffffff;
+
+  /* Accent */
+  --signal: #d8f263;
+
+  /* Paper card (Sign In) */
+  --paper: #f4f2e9;
+  --paper-rule: #d5d6cd;
+  --paper-text: #505a52;
+  --paper-muted: #69736c;
+
+  /* Account avatar */
+  --avatar-bg: #e4c3aa;
+  --avatar-fg: #4b2f26;
+
+  /* Type */
+  --font-display: "Luckiest Guy", sans-serif;
+  --font-serif: "Libertinus Serif", Georgia, serif;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  /* Procedural grain: fractalNoise, desaturated, tiled at 240px */
+  --grain: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22240%22%20height%3D%22240%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20type%3D%22saturate%22%20values%3D%220%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url%28%23n%29%22%2F%3E%3C%2Fsvg%3E");
+}
