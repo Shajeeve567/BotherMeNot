@@ -11,6 +11,7 @@ export const signals = pgTable(
     rawPayload: jsonb("raw_payload").notNull(),
     status: text("status").notNull().default("received"),
     receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+    formatted: jsonb("formatted"),
   },
   (table) => ({
     sourceExternalIdUnique: unique("signals_source_external_id_unique").on(

@@ -8,6 +8,13 @@
       "when": 1785770062584,
       "tag": "0000_shiny_morgan_stark",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789125525628,
+      "tag": "0001_legal_lucky_pierre",
+      "breakpoints": true
     }
   ]
 }
