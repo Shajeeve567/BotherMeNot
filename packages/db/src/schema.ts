@@ -11,6 +11,30 @@ export const users = pgTable("users", {
 export type UserRow = typeof users.$inferSelect;
 export type NewUserRow = typeof users.$inferInsert;
 
+
+export const sourceConnections = pgTable(
+  "source_connections",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    projectId: uuid("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    sourceType: text("source_type").notNull(), // "github", future: "linear", etc.
+    externalId: text("external_id").notNull(), // GitHub installation id
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => ({
+    sourceExternalUnique: unique("source_connections_type_external_unique").on(
+      table.sourceType,
+      table.externalId
+    ),
+  })
+);
+
+export type SourceConnectionRow = typeof sourceConnections.$inferSelect;
+export type NewSourceConnectionRow = typeof sourceConnections.$inferInsert;
+
+
 export const authIdentities = pgTable(
   "auth_identities",
   {
