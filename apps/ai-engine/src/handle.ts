@@ -1,8 +1,9 @@
 import { Job, UnrecoverableError } from "bullmq";
 import type { ProcessSignalJobData } from "@bother-me-not/contracts";
-import { signalsRepo, projectsRepo } from "@bother-me-not/db";
+import { signalsRepo, projectsRepo, aiModelConfigsRepo } from "@bother-me-not/db";
 import { buildInstructions } from "./buildInstructions.js";
 import { formatSignal } from "./formatSignal.js";
+import { describeProviderFailure, isPermanentProviderError } from "./providerErrors.js";
 import { resolveModel } from "./resolveModel.js";
 import { evaluateSignal } from "./signalAgent.js";
 
@@ -17,10 +18,12 @@ export async function handleSignal(job: Job<ProcessSignalJobData>): Promise<void
   await signalsRepo.updateStatus(signal.id, "processing");
 
   try {
+    const aiConfig = await aiModelConfigsRepo.findWithKeyByProjectId(project.id);
+
     const result = await evaluateSignal({
       instructions: buildInstructions(project),
       prompt: formatSignal(signal),
-      model: resolveModel(),
+      model: resolveModel(aiConfig),
     });
 
     await signalsRepo.updateFormatted(signal.id, result);
@@ -28,6 +31,9 @@ export async function handleSignal(job: Job<ProcessSignalJobData>): Promise<void
     console.log(`[ai-engine] signal ${signal.id}: deliver=${result.deliver} urgency=${result.urgency} model=${result.model}`);
   } catch (err) {
     await signalsRepo.updateStatus(signal.id, "failed");
+    if (isPermanentProviderError(err)) {
+      throw new UnrecoverableError(describeProviderFailure(err));
+    }
     throw err;
   }
 }
