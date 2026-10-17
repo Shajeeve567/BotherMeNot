@@ -1,15 +1,19 @@
 import Fastify from "fastify";
+import { assertEncryptionKey } from "@bother-me-not/db";
 import { registerRawBody } from "./plugins/raw-body.js";
 import { registerAuth } from "./plugins/auth.js";
 import { registerAuthRoutes } from "./routes/auth/auth.routes.js";
 import { registerErrorHandler } from "./plugins/error-handler.js"; 
 import { registerProjectRoutes } from "./routes/projects/projects.routes.js";
+import { registerAiConfigRoutes } from "./routes/projects/ai-config.routes.js";
 import { registerGithubAppSetupRoute } from "./routes/github-app/setup.routes.js";
 import { registerGithubAppWebhookRoute } from "./routes/github-app/webhook.routes.js";
 
 
 
 async function main() {
+
+  assertEncryptionKey();
 
   const app = Fastify({ logger: true });
   await registerErrorHandler(app);
@@ -20,6 +24,7 @@ async function main() {
   await registerAuth(app);
   await registerAuthRoutes(app);
   await registerProjectRoutes(app);
+  await registerAiConfigRoutes(app);
   await registerGithubAppSetupRoute(app);
   await registerGithubAppWebhookRoute(app);
 

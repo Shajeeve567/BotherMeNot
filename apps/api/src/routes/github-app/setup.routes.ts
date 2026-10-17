@@ -51,6 +51,9 @@ export async function registerGithubAppSetupRoute(app: FastifyInstance): Promise
       externalId: installation_id,
     });
 
-    return reply.redirect(`${config.webBaseUrl}/dashboard`);
+    // back to the project the user started from; the web app shows a "connected" notice
+    return reply.redirect(
+      `${config.webBaseUrl}/dashboard/projects/${encodeURIComponent(projectId)}?connected=github`
+    );
   });
 }
