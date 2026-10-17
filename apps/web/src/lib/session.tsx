@@ -9,6 +9,8 @@ export type SessionState =
 interface SessionContextValue {
   session: SessionState;
   signOut: () => Promise<void>;
+  /** The server rejected the cookie (401) mid-session: drop to anonymous so the guard redirects. */
+  expire: () => void;
 }
 
 const SessionContext = createContext<SessionContextValue | null>(null);
@@ -36,7 +38,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setSession({ status: "anonymous" });
   }, []);
 
-  return <SessionContext.Provider value={{ session, signOut }}>{children}</SessionContext.Provider>;
+  const expire = useCallback(() => setSession({ status: "anonymous" }), []);
+
+  return <SessionContext.Provider value={{ session, signOut, expire }}>{children}</SessionContext.Provider>;
 }
 
 export function useSession(): SessionContextValue {

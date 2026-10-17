@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router";
+import { QueryProvider } from "../lib/queryClient";
 import { SessionProvider, useSession } from "../lib/session";
 import styles from "./RequireAuth.module.css";
 
@@ -11,11 +12,13 @@ function Gate() {
   return <Outlet />;
 }
 
-/** Layout route that loads the session and guards everything beneath it. */
+/** Layout route that loads the session, provides the data cache, and guards everything beneath it. */
 export function RequireAuth() {
   return (
     <SessionProvider>
-      <Gate />
+      <QueryProvider>
+        <Gate />
+      </QueryProvider>
     </SessionProvider>
   );
 }

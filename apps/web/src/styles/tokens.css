@@ -33,6 +33,14 @@
   --paper-text: #505a52;
   --paper-muted: #69736c;
 
+  /* Feedback on paper surfaces (not in the handoff; picked to sit with the greens) */
+  --danger: #a3341f;
+  --danger-hover: #82281a;
+  --danger-tint: #f6e3dc;
+  --danger-text: #7d2414;
+  --success-tint: #e1ede2;
+  --input-bg: #fffdf8;
+
   /* Account avatar */
   --avatar-bg: #e4c3aa;
   --avatar-fg: #4b2f26;

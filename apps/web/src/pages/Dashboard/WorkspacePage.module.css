@@ -1,0 +1,9 @@
+/* Column layout shared by every page rendered inside the workspace. */
+.page {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  align-content: start;
+  gap: 28px;
+}
