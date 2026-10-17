@@ -86,6 +86,20 @@ export const notificationChannels = pgTable("notification_channels", {
 export type NotificationChannelRow = typeof notificationChannels.$inferSelect;
 export type NewNotificationChannelRow = typeof notificationChannels.$inferInsert;
 
+export const aiModelConfigs = pgTable("ai_model_configs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  projectId: uuid("project_id")
+    .notNull()
+    .unique()
+    .references(() => projects.id, { onDelete: "cascade" }), // one config per project
+  provider: text("provider").notNull(), // "google" | "anthropic" | "openai", validated at the API
+  model: text("model").notNull(),
+  apiKeyEncrypted: text("api_key_encrypted").notNull(), // v1.<iv>.<tag>.<ciphertext>, see crypto.ts
+  keyHint: text("key_hint").notNull(), // last 4 characters of the key, safe to show
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const signals = pgTable(
   "signals",
   {
