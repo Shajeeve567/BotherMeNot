@@ -36,6 +36,13 @@
       "when": 1791398488911,
       "tag": "0004_spooky_devos",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792203796900,
+      "tag": "0005_peaceful_killraven",
+      "breakpoints": true
     }
   ]
 }

@@ -20,13 +20,17 @@ export const sourceConnections = pgTable(
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
     sourceType: text("source_type").notNull(), // "github", future: "linear", etc.
-    externalId: text("external_id").notNull(), // GitHub installation id
+    externalId: text("external_id").notNull(), // GitHub installation id (one per GitHub account)
+    repoId: text("repo_id").notNull(), // GitHub repository id; stable across renames
+    repoFullName: text("repo_full_name").notNull(), // "owner/name", for display only
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
-    sourceExternalUnique: unique("source_connections_type_external_unique").on(
+    // a repo can feed exactly one project, so the webhook can resolve it unambiguously
+    sourceRepoUnique: unique("source_connections_type_external_repo_unique").on(
       table.sourceType,
-      table.externalId
+      table.externalId,
+      table.repoId
     ),
   })
 );

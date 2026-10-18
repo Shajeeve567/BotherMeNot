@@ -14,6 +14,7 @@ export { projectsRepo, type CreateProjectInput, type UpdateProjectInput } from "
 export { authIdentitiesRepo } from "./repos/authIdentities.js";
 export { usersRepo, type GithubProfile } from "./repos/users.js";
 export { sourceConnectionsRepo } from "./repos/sourceConnections.js";
+export type { CreateSourceConnectionResult } from "./repos/sourceConnections.js";
 export {
   aiModelConfigsRepo,
   type PublicAiModelConfig,
