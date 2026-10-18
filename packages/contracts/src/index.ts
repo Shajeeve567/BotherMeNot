@@ -4,3 +4,4 @@ export * from "./evalution.schema.js";
 // exports: aiOutputSchema, evaluationResultSchema, AIOutput, EvaluationResult
 export * from "./projects.schema.js";
 export * from "./aiConfig.schema.js";
+export * from "./connections.schema.js";

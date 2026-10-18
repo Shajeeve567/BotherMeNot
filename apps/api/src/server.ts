@@ -6,6 +6,7 @@ import { registerAuthRoutes } from "./routes/auth/auth.routes.js";
 import { registerErrorHandler } from "./plugins/error-handler.js"; 
 import { registerProjectRoutes } from "./routes/projects/projects.routes.js";
 import { registerAiConfigRoutes } from "./routes/projects/ai-config.routes.js";
+import { registerConnectionRoutes } from "./routes/projects/connections.routes.js";
 import { registerGithubAppSetupRoute } from "./routes/github-app/setup.routes.js";
 import { registerGithubAppWebhookRoute } from "./routes/github-app/webhook.routes.js";
 
@@ -25,6 +26,7 @@ async function main() {
   await registerAuthRoutes(app);
   await registerProjectRoutes(app);
   await registerAiConfigRoutes(app);
+  await registerConnectionRoutes(app);
   await registerGithubAppSetupRoute(app);
   await registerGithubAppWebhookRoute(app);
 
