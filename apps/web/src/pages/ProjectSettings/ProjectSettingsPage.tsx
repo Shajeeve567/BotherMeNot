@@ -16,10 +16,9 @@ import { GithubSection } from "./GithubSection";
 
 const BACK = { to: "/dashboard/projects", label: "All projects" };
 
-/** One-shot banners driven by query params (?created=1 after create, ?connected=github after the GitHub App). */
+/** One-shot banners driven by query params (?created=1 after create). */
 const ARRIVAL_NOTICES: Record<string, string> = {
   created: "Project created. Next, connect a GitHub repository so its events start flowing in.",
-  connected: "GitHub connected. Events from the repositories you selected will now be filtered for this project.",
 };
 
 export function ProjectSettingsPage() {

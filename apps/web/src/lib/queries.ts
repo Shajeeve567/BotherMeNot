@@ -1,7 +1,7 @@
 import type { UpdateProjectBody, UpsertAiConfigBody } from "@bother-me-not/contracts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { aiConfigApi, type AiConfig } from "./aiConfig";
-import { projectsApi, type Project } from "./projects";
+import { projectsApi, type Project, type RepoConnection } from "./projects";
 
 /**
  * Hierarchical keys: invalidating ["projects"] also refreshes every project and its
@@ -11,6 +11,8 @@ export const keys = {
   projects: ["projects"] as const,
   project: (id: string) => ["projects", id] as const,
   aiConfig: (id: string) => ["projects", id, "ai-config"] as const,
+  connections: (id: string) => ["projects", id, "connections"] as const,
+  githubRepos: (id: string, installationId: string) => ["projects", id, "github-repos", installationId] as const,
 };
 
 // ── Projects ──────────────────────────────────────────────────────────────
@@ -65,14 +67,65 @@ export function useDeleteProject(id: string) {
   });
 }
 
-/** Fetches a fresh install link and moves the whole tab to GitHub. */
-export function useConnectGithub(id: string) {
+/**
+ * Asks the API how to connect. A fresh install moves the whole tab to GitHub; if the app is
+ * already installed there is nowhere to send them, so the caller gets the installation id
+ * (via `onInstalled`) and shows the repo picker instead.
+ */
+export function useConnectGithub(id: string, onInstalled: (installationId: string) => void) {
   return useMutation({
     mutationFn: () => projectsApi.connectGithub(id),
-    onSuccess: ({ installUrl }) => {
+    onSuccess: (result) => {
+      if ("installationId" in result) {
+        onInstalled(result.installationId);
+        return;
+      }
       // A fetch() would follow the redirect invisibly; the user has to land on GitHub.
-      window.location.href = installUrl;
+      window.location.href = result.installUrl;
     },
+  });
+}
+
+export function useConnections(projectId: string) {
+  return useQuery({
+    queryKey: keys.connections(projectId),
+    queryFn: ({ signal }) => projectsApi.connections(projectId, signal),
+  });
+}
+
+/** Repos the installation can see. Always refetched on open: they change on GitHub's side. */
+export function useGithubRepos(projectId: string, installationId: string | null) {
+  return useQuery({
+    queryKey: keys.githubRepos(projectId, installationId ?? ""),
+    queryFn: ({ signal }) => projectsApi.githubRepos(projectId, installationId!, signal),
+    enabled: installationId !== null,
+    staleTime: 0,
+    gcTime: 0,
+    retry: false,
+  });
+}
+
+export function useLinkRepo(projectId: string, installationId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (repoId: string) => projectsApi.linkRepo(projectId, { installationId, repoId }),
+    onSuccess: (connection) => {
+      qc.setQueryData<RepoConnection[]>(keys.connections(projectId), (list) =>
+        list && !list.some((c) => c.id === connection.id) ? [...list, connection] : list,
+      );
+      void qc.invalidateQueries({ queryKey: keys.githubRepos(projectId, installationId) });
+    },
+  });
+}
+
+export function useDisconnectRepo(projectId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (connectionId: string) => projectsApi.disconnect(projectId, connectionId),
+    onSuccess: (_void, connectionId) =>
+      qc.setQueryData<RepoConnection[]>(keys.connections(projectId), (list) =>
+        list?.filter((c) => c.id !== connectionId),
+      ),
   });
 }
 

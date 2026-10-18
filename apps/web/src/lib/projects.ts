@@ -10,6 +10,23 @@ export interface Project {
   createdAt: string;
 }
 
+/** A repository the GitHub App can access. */
+export interface GithubRepo {
+  id: string;
+  fullName: string;
+  private: boolean;
+  linkedProjectId: string | null;
+}
+
+/** A repository linked to a project (a `source_connections` row). */
+export interface RepoConnection {
+  id: string;
+  projectId: string;
+  repoId: string;
+  repoFullName: string;
+  createdAt: string;
+}
+
 const projectPath = (id: string) => `/api/projects/${encodeURIComponent(id)}`;
 
 export const projectsApi = {
@@ -24,6 +41,29 @@ export const projectsApi = {
 
   remove: (id: string) => api<void>(projectPath(id), { method: "DELETE" }),
 
-  /** Returns a GitHub App install link, valid for 10 minutes. Navigate to it; don't fetch it. */
-  connectGithub: (id: string) => api<{ installUrl: string }>(`${projectPath(id)}/connect`, { method: "POST" }),
+  /**
+   * Either `installUrl` (app not installed on their GitHub account yet: navigate there) or
+   * `installationId` (already installed: show the repo picker; GitHub would never call back).
+   */
+  connectGithub: (id: string) =>
+    api<{ installUrl: string } | { installationId: string }>(`${projectPath(id)}/connect`, { method: "POST" }),
+
+  /** Repos the installation can see; `linkedProjectId` is set when a project already uses one. */
+  githubRepos: async (id: string, installationId: string, signal?: AbortSignal) =>
+    (
+      await api<{ repos: GithubRepo[] }>(
+        `${projectPath(id)}/github/repos?installationId=${encodeURIComponent(installationId)}`,
+        { signal },
+      )
+    ).repos,
+
+  linkRepo: async (id: string, body: { installationId: string; repoId: string }) =>
+    (await api<{ connection: RepoConnection }>(`${projectPath(id)}/github/repos`, { method: "POST", json: body }))
+      .connection,
+
+  connections: async (id: string, signal?: AbortSignal) =>
+    (await api<{ connections: RepoConnection[] }>(`${projectPath(id)}/connections`, { signal })).connections,
+
+  disconnect: (id: string, connectionId: string) =>
+    api<void>(`${projectPath(id)}/connections/${encodeURIComponent(connectionId)}`, { method: "DELETE" }),
 };
