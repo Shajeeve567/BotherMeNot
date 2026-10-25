@@ -1,0 +1,26 @@
+.skeleton {
+  width: 110px;
+  margin: auto;
+  display: grid;
+  gap: 10px;
+  opacity: 0.19;
+}
+
+.skeleton > span {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--white);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton > span {
+    animation: none;
+  }
+}

@@ -23,6 +23,16 @@ export const authIdentitiesRepo = {
     return row;
   },
 
+  async findByUserId(userId: string, provider: string): Promise<AuthIdentityRow | undefined> {
+    const [row] = await db
+      .select()
+      .from(authIdentities)
+      .where(and(eq(authIdentities.userId, userId), eq(authIdentities.provider, provider)))
+      .limit(1);
+
+    return row;
+  },
+
   async updateAccessToken(
     id: string,
     accessToken: string

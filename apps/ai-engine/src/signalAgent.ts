@@ -1,24 +1,25 @@
 import { Agent } from "@mastra/core/agent";
-import { google } from "@ai-sdk/google";
 import { aiOutputSchema } from "@bother-me-not/contracts";
 import type { EvaluationResult } from "@bother-me-not/contracts";
+import type { ModelConfig } from "./resolveModel.js";
 
-const signalAgent = new Agent({
-  id: "signalAgent",
-  name: "Signal Agent",
-  instructions: "Analyze signal data and provide helpful insights.", // replace with real prompt
-  model: google("gemini-2.5-flash"),
-});
-
-
-export async function evaluateSignal(prompt: string): Promise<EvaluationResult> {
-  const result = await signalAgent.generate(prompt, {
-    structuredOutput: {
-      schema: aiOutputSchema as any,
-    },
-  });
-
-  return { ...result.object, evaluator: "ai" as const };
+interface EvaluateInput {
+  instructions: string;
+  prompt: string;
+  model: ModelConfig;
 }
 
-export default signalAgent;
+export async function evaluateSignal({ instructions, prompt, model }: EvaluateInput): Promise<EvaluationResult> {
+  const agent = new Agent({
+    id: "signalAgent",
+    name: "Signal Agent",
+    instructions,
+    model,
+  });
+
+  const result = await agent.generate(prompt, {
+    structuredOutput: { schema: aiOutputSchema as any },
+  });
+
+  return { ...result.object, evaluator: "ai" as const, model: model.id };
+}

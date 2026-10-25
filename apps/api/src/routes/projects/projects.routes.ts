@@ -1,15 +1,9 @@
 import type { FastifyInstance } from "fastify";
-import { projectsRepo } from "@bother-me-not/db";
+import { authIdentitiesRepo, projectsRepo } from "@bother-me-not/db";
 import { createProjectSchema, updateProjectSchema } from "@bother-me-not/contracts";
 import { config } from "../../config.js";
-
-async function requireOwnedProject(id: string, userId: string){
-    const project = await projectsRepo.findById(id);
-    if (!project || project.userId !== userId){
-        return null;
-    }
-    return project;
-}
+import { findInstallationForAccount } from "../github-app/client.js";
+import { requireOwnedProject } from "./ownership.js";
 
 
 export async function registerProjectRoutes(app: FastifyInstance): Promise<void> {
@@ -31,8 +25,17 @@ export async function registerProjectRoutes(app: FastifyInstance): Promise<void>
         const project = await requireOwnedProject(id, request.user.userId);
         if (!project) return reply.code(404).send({ error: "Not found" });
 
+        // Already installed on their GitHub account: GitHub would only show its settings page and
+        // never call our setup URL, so skip it and let the web app show the repo picker.
+        const identity = await authIdentitiesRepo.findByUserId(request.user.userId, "github");
+        if (!identity) return reply.code(400).send({ error: "No GitHub account linked" });
+
+        const installation = await findInstallationForAccount(identity.providerAccountId);
+        if (installation) return { installationId: installation.id };
+
+        // `uid` (not `userId`) so this URL-borne token can never double as a session token
         const state = app.jwt.sign(
-            { projectId: id } as unknown as { userId: string },
+            { projectId: id, uid: request.user.userId } as unknown as { userId: string },
             { expiresIn: "10m" }
         );
         const installUrl = `https://github.com/apps/${config.githubApp.slug}/installations/new?state=${state}`;

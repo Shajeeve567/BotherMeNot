@@ -1,0 +1,123 @@
+/* ── Create form ── */
+
+.createForm {
+  display: grid;
+  gap: 14px;
+}
+
+.createRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+}
+
+/* Line the button up with the input, below the label row. */
+.createButton {
+  margin-top: 25px;
+  height: 46px;
+}
+
+@media (max-width: 520px) {
+  .createRow {
+    grid-template-columns: 1fr;
+  }
+
+  .createButton {
+    margin-top: 0;
+  }
+}
+
+/* ── List ── */
+
+.list {
+  display: grid;
+  min-height: 120px;
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 16px;
+}
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 22px 18px;
+  border-radius: 20px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 14px 30px -20px rgba(13, 53, 17, 0.5);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 36px -20px rgba(13, 53, 17, 0.6);
+}
+
+.card:focus-visible {
+  outline-color: var(--ink);
+}
+
+.cardName {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.cardContext {
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--paper-text);
+}
+
+.muted {
+  font-style: italic;
+  color: var(--paper-muted);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--paper-muted);
+}
+
+.card:hover .cardMeta {
+  color: var(--ink);
+}
+
+.empty {
+  padding: 28px;
+  border-radius: 20px;
+  border: 1.5px dashed rgba(27, 27, 27, 0.3);
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.4;
+  text-align: center;
+  color: #23331f;
+}
+
+.retry {
+  height: 32px;
+  margin-left: 8px;
+  padding: 0 12px;
+  font-size: 13px;
+}

@@ -35,22 +35,31 @@ export async function registerGithubAppWebhookRoute(app: FastifyInstance): Promi
     const payload = request.body as Record<string, any>;
 
 
-    if (githubEvent === "installation" && payload.action === "deleted") {
-      const connection = await sourceConnectionsRepo.findByExternalId(
+    if (githubEvent === "installation") {
+      if (payload.action === "deleted") {
+        await sourceConnectionsRepo.deleteByInstallation("github", String(payload.installation.id));
+      }
+      return reply.code(200).send({ received: true });
+    }
+
+    if (githubEvent === "installation_repositories") {
+      const removed = (payload.repositories_removed ?? []) as { id: number }[];
+      await sourceConnectionsRepo.deleteByRepos(
         "github",
-        String(payload.installation.id)
+        String(payload.installation.id),
+        removed.map((r) => String(r.id))
       );
-      if (connection) await sourceConnectionsRepo.delete(connection.id);
       return reply.code(200).send({ received: true });
     }
 
-    if (githubEvent === "installation" || githubEvent === "installation_repositories") {
+    // signals are routed by repo: one installation can feed several projects
+    if (!payload.installation?.id || !payload.repository?.id) {
       return reply.code(200).send({ received: true });
     }
-
-    const connection = await sourceConnectionsRepo.findByExternalId(
+    const connection = await sourceConnectionsRepo.findByRepo(
       "github",
-      String(payload.installation.id)
+      String(payload.installation.id),
+      String(payload.repository.id)
     );
     if (!connection) {
       return reply.code(200).send({ received: true });
