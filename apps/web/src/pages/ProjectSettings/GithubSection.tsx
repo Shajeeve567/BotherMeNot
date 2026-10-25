@@ -134,9 +134,19 @@ function RepoPicker({
     <div className={repos.picker}>
       <div className={repos.pickerHead}>
         <span className={repos.pickerTitle}>Pick a repository</span>
-        <Button variant="secondary" onClick={onClose}>
-          Done
-        </Button>
+        <div className={repos.pickerActions}>
+          <Button
+            variant="secondary"
+            onClick={() => void available.refetch()}
+            pending={available.isFetching}
+            pendingLabel="Refreshing…"
+          >
+            Refresh
+          </Button>
+          <Button variant="secondary" onClick={onClose}>
+            Done
+          </Button>
+        </div>
       </div>
 
       {available.isPending && <p className={styles.note}>Loading repositories from GitHub…</p>}
@@ -162,8 +172,8 @@ function RepoPicker({
           The app cannot see any repositories yet.{" "}
           <a href={installationSettingsUrl(installationId)} target="_blank" rel="noopener noreferrer">
             Choose repositories on GitHub
-          </a>
-          , then reopen this list.
+          </a>{" "}
+          (opens in a new tab), then come back here and press Refresh.
         </p>
       )}
 
@@ -202,8 +212,8 @@ function RepoPicker({
             Do not see a repository?{" "}
             <a href={installationSettingsUrl(installationId)} target="_blank" rel="noopener noreferrer">
               Give the app access on GitHub
-            </a>
-            , then reopen this list.
+            </a>{" "}
+            (opens in a new tab). Save it there, close that tab, then press Refresh here.
           </p>
         </>
       )}

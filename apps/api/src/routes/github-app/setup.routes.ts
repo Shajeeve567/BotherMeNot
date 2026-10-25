@@ -10,11 +10,18 @@ import { userOwnsInstallation } from "./ownership.js";
  */
 export async function registerGithubAppSetupRoute(app: FastifyInstance): Promise<void> {
   app.get("/github-app/setup", async (request, reply) => {
-    const { installation_id, state } = request.query as {
+    const { installation_id, setup_action, state } = request.query as {
       installation_id?: string;
       setup_action?: string;
       state?: string;
     };
+
+    // GitHub redirects here after someone edits an existing installation's repositories
+    // (when the app has "Redirect on update" on). There is no state then, and nothing to
+    // link: send them back to the dashboard, where the repo picker re-reads GitHub.
+    if (setup_action === "update" && !state) {
+      return reply.redirect(new URL("/dashboard/projects", config.webBaseUrl).toString());
+    }
 
     if (!installation_id || !state || !/^\d{1,20}$/.test(installation_id)) {
       return reply.code(400).send({ error: "Missing or invalid installation_id or state" });
