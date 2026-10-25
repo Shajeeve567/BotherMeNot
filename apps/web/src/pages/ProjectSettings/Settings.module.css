@@ -1,0 +1,59 @@
+.form {
+  display: grid;
+  gap: 20px;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.saved {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--green-700);
+}
+
+.note {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--paper-muted);
+}
+
+/* Current AI model, shown above its form */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #ebe8dc;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.status svg {
+  flex: none;
+  color: var(--green-700);
+}
+
+.status code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.statusMeta {
+  color: var(--paper-muted);
+}

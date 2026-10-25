@@ -1,0 +1,56 @@
+/* GitHub repositories: the connected list and the picker share one row style */
+.list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #ebe8dc;
+}
+
+.name {
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--paper-muted);
+}
+
+.picker {
+  display: grid;
+  gap: 12px;
+}
+
+.pickerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pickerTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pickerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

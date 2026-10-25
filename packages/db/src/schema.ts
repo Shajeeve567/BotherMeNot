@@ -20,13 +20,17 @@ export const sourceConnections = pgTable(
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
     sourceType: text("source_type").notNull(), // "github", future: "linear", etc.
-    externalId: text("external_id").notNull(), // GitHub installation id
+    externalId: text("external_id").notNull(), // GitHub installation id (one per GitHub account)
+    repoId: text("repo_id").notNull(), // GitHub repository id; stable across renames
+    repoFullName: text("repo_full_name").notNull(), // "owner/name", for display only
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
-    sourceExternalUnique: unique("source_connections_type_external_unique").on(
+    // a repo can feed exactly one project, so the webhook can resolve it unambiguously
+    sourceRepoUnique: unique("source_connections_type_external_repo_unique").on(
       table.sourceType,
-      table.externalId
+      table.externalId,
+      table.repoId
     ),
   })
 );
@@ -85,6 +89,20 @@ export const notificationChannels = pgTable("notification_channels", {
 
 export type NotificationChannelRow = typeof notificationChannels.$inferSelect;
 export type NewNotificationChannelRow = typeof notificationChannels.$inferInsert;
+
+export const aiModelConfigs = pgTable("ai_model_configs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  projectId: uuid("project_id")
+    .notNull()
+    .unique()
+    .references(() => projects.id, { onDelete: "cascade" }), // one config per project
+  provider: text("provider").notNull(), // "google" | "anthropic" | "openai", validated at the API
+  model: text("model").notNull(),
+  apiKeyEncrypted: text("api_key_encrypted").notNull(), // v1.<iv>.<tag>.<ciphertext>, see crypto.ts
+  keyHint: text("key_hint").notNull(), // last 4 characters of the key, safe to show
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 export const signals = pgTable(
   "signals",

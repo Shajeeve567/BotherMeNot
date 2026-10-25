@@ -1,26 +1,39 @@
-import { Job } from "bullmq";
-import type { ProcessSignalJobData, EvaluationResult } from "@bother-me-not/contracts";
-import { signalsRepo } from "@bother-me-not/db";
-import type { SignalRow } from "@bother-me-not/db";
+import { Job, UnrecoverableError } from "bullmq";
+import type { ProcessSignalJobData } from "@bother-me-not/contracts";
+import { signalsRepo, projectsRepo, aiModelConfigsRepo } from "@bother-me-not/db";
+import { buildInstructions } from "./buildInstructions.js";
+import { formatSignal } from "./formatSignal.js";
+import { describeProviderFailure, isPermanentProviderError } from "./providerErrors.js";
+import { resolveModel } from "./resolveModel.js";
 import { evaluateSignal } from "./signalAgent.js";
-// Get Payload -> Read -> Decision -> Put to channel
 
 export async function handleSignal(job: Job<ProcessSignalJobData>): Promise<void> {
-  // 1. GET PAYLOAD
   const signal = await signalsRepo.findById(job.data.signalId);
-  if (!signal) throw new Error(`Signal ${job.data.signalId} not found`);
+  if (!signal) throw new UnrecoverableError(`Signal ${job.data.signalId} not found`);
+  if (signal.status === "processed") return;
+
+  const project = await projectsRepo.findById(signal.projectId);
+  if (!project) throw new UnrecoverableError(`Project ${signal.projectId} not found`);
+
   await signalsRepo.updateStatus(signal.id, "processing");
 
-  // send to ai
-  const result = await evaluateSignal(`The signal that needed human intervention: ${signal}`);
-  console.log({...result});
-  
-
   try {
+    const aiConfig = await aiModelConfigsRepo.findWithKeyByProjectId(project.id);
+
+    const result = await evaluateSignal({
+      instructions: buildInstructions(project),
+      prompt: formatSignal(signal),
+      model: resolveModel(aiConfig),
+    });
+
+    await signalsRepo.updateFormatted(signal.id, result);
     await signalsRepo.updateStatus(signal.id, "processed");
+    console.log(`[ai-engine] signal ${signal.id}: deliver=${result.deliver} urgency=${result.urgency} model=${result.model}`);
   } catch (err) {
     await signalsRepo.updateStatus(signal.id, "failed");
+    if (isPermanentProviderError(err)) {
+      throw new UnrecoverableError(describeProviderFailure(err));
+    }
     throw err;
   }
 }
-

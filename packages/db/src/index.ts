@@ -1,4 +1,5 @@
 export { db } from "./client.js";
+export { assertEncryptionKey } from "./crypto.js";
 export { signals, type SignalRow, type NewSignalRow } from "./schema.js";
 export { users, type UserRow, type NewUserRow } from "./schema.js";
 export { authIdentities, type AuthIdentityRow, type NewAuthIdentityRow } from "./schema.js";
@@ -13,3 +14,11 @@ export { projectsRepo, type CreateProjectInput, type UpdateProjectInput } from "
 export { authIdentitiesRepo } from "./repos/authIdentities.js";
 export { usersRepo, type GithubProfile } from "./repos/users.js";
 export { sourceConnectionsRepo } from "./repos/sourceConnections.js";
+export type { CreateSourceConnectionResult } from "./repos/sourceConnections.js";
+export {
+  aiModelConfigsRepo,
+  type PublicAiModelConfig,
+  type AiModelConfigWithKey,
+  type UpsertAiModelConfigInput,
+  type UpsertAiModelConfigResult,
+} from "./repos/aiModelConfigs.js";

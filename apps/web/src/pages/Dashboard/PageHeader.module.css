@@ -1,0 +1,40 @@
+.header {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  color: var(--ink);
+  opacity: 0.75;
+  border-radius: 8px;
+}
+
+.back:hover {
+  opacity: 1;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(36px, 4.4vw, 56px);
+  line-height: 1;
+  padding-top: 0.08em;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  max-width: 560px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.3;
+  color: #23331f;
+}
