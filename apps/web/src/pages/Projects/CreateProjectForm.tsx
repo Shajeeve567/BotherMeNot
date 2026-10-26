@@ -24,7 +24,7 @@ export function CreateProjectForm() {
 
     setErrors({});
     create.mutate(checked.data, {
-      onSuccess: (project) => navigate(`/dashboard/projects/${project.id}?created=1`),
+      onSuccess: (project) => navigate(`/dashboard/projects/${project.id}/settings?created=1`),
       onError: (err) => setErrors(serverFieldErrors(err)),
     });
   };

@@ -1,6 +1,7 @@
-import type { UpdateProjectBody, UpsertAiConfigBody } from "@bother-me-not/contracts";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { SignalView, UpdateProjectBody, UpsertAiConfigBody } from "@bother-me-not/contracts";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { aiConfigApi, type AiConfig } from "./aiConfig";
+import { alertsApi } from "./alerts";
 import { projectsApi, type Project, type RepoConnection } from "./projects";
 
 /**
@@ -13,6 +14,7 @@ export const keys = {
   aiConfig: (id: string) => ["projects", id, "ai-config"] as const,
   connections: (id: string) => ["projects", id, "connections"] as const,
   githubRepos: (id: string, installationId: string) => ["projects", id, "github-repos", installationId] as const,
+  alerts: (id: string, view: SignalView) => ["projects", id, "alerts", view] as const,
 };
 
 // ── Projects ──────────────────────────────────────────────────────────────
@@ -126,6 +128,24 @@ export function useDisconnectRepo(projectId: string) {
       qc.setQueryData<RepoConnection[]>(keys.connections(projectId), (list) =>
         list?.filter((c) => c.id !== connectionId),
       ),
+  });
+}
+
+// ── Alerts ────────────────────────────────────────────────────────────────
+
+/**
+ * A project's alerts, newest first, one page per fetch. Each page hands back the cursor for
+ * the next, and every view (all / delivered / ...) is cached separately.
+ */
+export function useAlerts(projectId: string | null, view: SignalView) {
+  return useInfiniteQuery({
+    queryKey: keys.alerts(projectId ?? "", view),
+    queryFn: ({ pageParam, signal }) => alertsApi.list(projectId!, { view, cursor: pageParam }, signal),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (last) => last.nextCursor ?? undefined,
+    enabled: projectId !== null,
+    // New events arrive on their own; check again when the user comes back to the tab.
+    staleTime: 15_000,
   });
 }
 

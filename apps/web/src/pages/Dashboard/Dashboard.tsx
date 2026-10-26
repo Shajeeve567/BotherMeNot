@@ -9,7 +9,6 @@ import styles from "./Dashboard.module.css";
 const TABS = [
   { to: "/dashboard/projects", label: "Projects", Icon: LayoutGrid },
   { to: "/dashboard/rules", label: "Rules", Icon: SlidersHorizontal },
-  { to: "/dashboard/alerts", label: "Alerts", Icon: BellRing },
 ] as const;
 
 /** App shell: account button, sidebar, and the frosted workspace that renders the active route. */
