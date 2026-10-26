@@ -50,7 +50,7 @@ export async function registerGithubAppSetupRoute(app: FastifyInstance): Promise
     }
 
     const target = new URL(
-      `/dashboard/projects/${encodeURIComponent(projectId)}`,
+      `/dashboard/projects/${encodeURIComponent(projectId)}/settings`,
       config.webBaseUrl
     );
     target.searchParams.set("installation", installation_id);
