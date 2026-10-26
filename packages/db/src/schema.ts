@@ -119,6 +119,8 @@ export const signals = pgTable(
     status: text("status").notNull().default("received"),
     receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
     formatted: jsonb("formatted"),
+    // why processing failed; fixed, user-safe text (never provider output). Null otherwise.
+    error: text("error"),
   },
   (table) => ({
     sourceExternalIdProjectUnique: unique("signals_source_external_id_project_unique").on(

@@ -9,7 +9,7 @@ export {
   type NotificationChannelRow,
   type NewNotificationChannelRow,
 } from "./schema.js";
-export { signalsRepo } from "./repos/signals.js";
+export { signalsRepo, type SignalView, type ListSignalsOptions } from "./repos/signals.js";
 export { projectsRepo, type CreateProjectInput, type UpdateProjectInput } from "./repos/projects.js";
 export { authIdentitiesRepo } from "./repos/authIdentities.js";
 export { usersRepo, type GithubProfile } from "./repos/users.js";

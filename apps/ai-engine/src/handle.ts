@@ -30,10 +30,13 @@ export async function handleSignal(job: Job<ProcessSignalJobData>): Promise<void
     await signalsRepo.updateStatus(signal.id, "processed");
     console.log(`[ai-engine] signal ${signal.id}: deliver=${result.deliver} urgency=${result.urgency} model=${result.model}`);
   } catch (err) {
-    await signalsRepo.updateStatus(signal.id, "failed");
+    // the stored reason is always fixed text, never the provider's own message
     if (isPermanentProviderError(err)) {
-      throw new UnrecoverableError(describeProviderFailure(err));
+      const reason = describeProviderFailure(err);
+      await signalsRepo.markFailed(signal.id, reason);
+      throw new UnrecoverableError(reason);
     }
+    await signalsRepo.markFailed(signal.id, "The AI provider had a temporary problem. Try again later");
     throw err;
   }
 }

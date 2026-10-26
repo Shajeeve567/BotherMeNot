@@ -5,3 +5,5 @@ export * from "./evalution.schema.js";
 export * from "./projects.schema.js";
 export * from "./aiConfig.schema.js";
 export * from "./connections.schema.js";
+
+export * from "./alerts.schema.js";
