@@ -92,7 +92,7 @@ export function AlertsPage() {
           {noRepo ? (
             <>
               No repository is connected to this project yet.{" "}
-              <Link to="settings">Connect one in Settings</Link> and its events will show up here.
+              <Link to={`/dashboard/projects/${project.id}/settings`}>Connect one in Settings</Link> and its events will show up here.
             </>
           ) : (
             EMPTY[view]

@@ -147,8 +147,15 @@
   }
 
   .tabs {
-    grid-template-rows: none;
+    grid-auto-rows: auto;
     grid-auto-flow: column;
+    grid-auto-columns: 46px;
+  }
+
+  /* Six project icons already fill the bar. */
+  .sidebar[data-mode="project"] .logo,
+  .sidebar[data-mode="project"] .help {
+    display: none;
   }
 
   .workspace {
